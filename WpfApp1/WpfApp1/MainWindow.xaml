@@ -1,0 +1,65 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="800">
+    <Window.Resources>
+        <local:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+        <local:ShapeTypeConverter x:Key="ShapeTypeConverter" />
+    </Window.Resources>
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Margin="10">
+            <TextBlock Text="Выберите фигуру:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <ComboBox SelectedValue="{Binding CurrentShapeType, Converter={StaticResource ShapeTypeConverter}}" SelectedValuePath="Tag" Margin="0,0,0,10">
+                <ComboBoxItem Content="Прямоугольник" Tag="Rectangle" />
+                <ComboBoxItem Content="Окружность" Tag="Circle" />
+            </ComboBox>
+            <TextBlock Text="Цвет фигуры:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <xctk:ColorPicker SelectedColor="{Binding CurrentShape.ShapeColor}" Margin="0,0,0,10"/>
+            <TextBlock Text="Текст на фигуре:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBox Text="{Binding CurrentShape.Text}" Margin="0,0,0,10"/>
+            <TextBlock Text="Цвет текста:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <xctk:ColorPicker SelectedColor="{Binding CurrentShape.TextColor}" Margin="0,0,0,10"/>
+            <TextBlock Text="Размер фигуры:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBlock Text="Ширина" Margin="0,0,0,5"/>
+            <Slider Minimum="0" Maximum="500" Value="{Binding CurrentShape.Width}" Margin="0,0,0,10"/>
+            <TextBlock Text="Высота" Margin="0,0,0,5"/>
+            <Slider Minimum="0" Maximum="500" Value="{Binding CurrentShape.Height}" Margin="0,0,0,10"/>
+            <TextBlock Text="Поворот (только для прямоугольника):" FontWeight="Bold" Margin="0,0,0,5"/>
+            <Slider Minimum="0" Maximum="360" Value="{Binding CurrentShape.Rotation}" Margin="0,0,0,10"/>
+            <TextBlock Text="Сжатие (только для круга):" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBlock Text="По горизонтали" Margin="0,0,0,5"/>
+            <Slider Minimum="0.1" Maximum="2" Value="{Binding CurrentShape.ScaleX}" Margin="0,0,0,10"/>
+            <TextBlock Text="По вертикали" Margin="0,0,0,5"/>
+            <Slider Minimum="0.1" Maximum="2" Value="{Binding CurrentShape.ScaleY}" Margin="0,0,0,10"/>
+        </StackPanel>
+        <Canvas Grid.Column="1" Margin="10">
+            <!-- Прямоугольник -->
+            <Rectangle Width="{Binding CurrentShape.Width}" Height="{Binding CurrentShape.Height}" Fill="{Binding CurrentShape.ShapeColor, Converter={StaticResource ColorToBrushConverter}}" Visibility="{Binding RectangleVisibility}">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="{Binding CurrentShape.Rotation}" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <TextBlock Text="{Binding CurrentShape.Text}" Foreground="{Binding CurrentShape.TextColor, Converter={StaticResource ColorToBrushConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="{Binding TextPositionX}" Canvas.Top="{Binding TextPositionY}" Visibility="{Binding RectangleVisibility}"/>
+
+            <!-- Круг -->
+            <Ellipse Width="{Binding CurrentShape.Width}" Height="{Binding CurrentShape.Height}" Fill="{Binding CurrentShape.ShapeColor, Converter={StaticResource ColorToBrushConverter}}" Visibility="{Binding EllipseVisibility}">
+                <Ellipse.RenderTransform>
+                    <ScaleTransform ScaleX="{Binding CurrentShape.ScaleX}" ScaleY="{Binding CurrentShape.ScaleY}" />
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <TextBlock Text="{Binding CurrentShape.Text}" Foreground="{Binding CurrentShape.TextColor, Converter={StaticResource ColorToBrushConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="{Binding TextPositionX}" Canvas.Top="{Binding TextPositionY}" Visibility="{Binding EllipseVisibility}"/>
+        </Canvas>
+    </Grid>
+</Window>

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "FeTTOhReEtQ=",
+  "success": true,
+  "projectFilePath": "D:\\4 course\\Project\\GUI\\WpfApp1\\WpfApp1\\WpfApp1.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dimal\\.nuget\\packages\\extended.wpf.toolkit\\4.7.25103.5738\\extended.wpf.toolkit.4.7.25103.5738.nupkg.sha512"
+  ],
+  "logs": []
+}
